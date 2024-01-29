@@ -8,6 +8,9 @@ Näin lomake luodaan JS koodissa ja ei tehdä turhia sivulatauksia.
 
 
 Selain ->> serveri: GET https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
 **Pyyntö: POST**
+
 **Status koodi: 201**
-    _Luodaan JavaScriptissä uusi lomake dokumentin ID:n perusteella tehtävään tapahtumankäsittelijään_
+
+_Luodaan JavaScriptissä uusi lomake dokumentin ID:n perusteella tehtävään tapahtumankäsittelijään_
