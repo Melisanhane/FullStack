@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 const VoteStatistics = (props) => {
-  console.log(props, ' Vote Statisticsin propsit')
     return (
       <p>has {props.votelist[props.selected]} votes</p>
     )
