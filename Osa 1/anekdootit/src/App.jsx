@@ -1,20 +1,12 @@
 import { useState } from 'react'
 
-// Vote statistics || TOIMII siten, että Debuggaamalla tekee sen mitä haluan mutta ei tulosta
 const VoteStatistics = (props) => {
   console.log(props, ' Vote Statisticsin propsit')
- /* if (props.votelist > 0) {
-    return ( 
-      <p>No votes</p>
-    )
-  }
-  */
     return (
-      <p>has {props.votelist[props.selected]} votes </p>
+      <p>has {props.votelist[props.selected]} votes</p>
     )
 }
 
-// Voittaja || TOIMII KOVAKOODATTUNA
 const Statistics = ({votelist, anecdotes}) => {
   let biggest = 0
   let location = 0
@@ -24,11 +16,9 @@ const Statistics = ({votelist, anecdotes}) => {
       location = i
     }
   }
-//  console.log('Eniten ääniä: ')
-//  console.log(anecdotes[location])
   return (
     <p>{anecdotes[location]}
-    < br/>
+    <br/>
     has {biggest} votes</p>
   )
 }
@@ -51,9 +41,9 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))  // Uusi lista
 
-   const Vote = () => { 
+   const Vote = () => {
     const copyVotes =[...votes]
-    votes[selected] += 1
+    copyVotes[selected] += 1
     setVotes(copyVotes)
   }
 
@@ -74,13 +64,5 @@ const App = () => {
     </div>
   )
 }
-
-/*
-<Statistics anecdotes={anecdotes} votelist={votes} selected={selected} />
-      <Statistics votelist={votes} vote={selected} />
-            {anecdotes[selected]}
-            <VoteStatics />
-*/ 
-
 
 export default App
