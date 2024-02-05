@@ -1,19 +1,17 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 
 // Vote statistics || TOIMII siten, että Debuggaamalla tekee sen mitä haluan mutta ei tulosta
 const VoteStatistics = (props) => {
   console.log(props, ' Vote Statisticsin propsit')
-  debugger
-  if (props.votelist === 0) {
+ /* if (props.votelist > 0) {
     return ( 
       <p>No votes</p>
     )
   }
-  if (props > 0) {
+  */
     return (
-      <p>has {props} votes </p>
+      <p>has {props.votelist[props.selected]} votes </p>
     )
-  }
 }
 
 // Voittaja || TOIMII KOVAKOODATTUNA
@@ -50,36 +48,24 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-//  const [selected, setSelected] = useState(0)
-  const votes = new Array(anecdotes.length).fill(0)  // Uusi lista
-  let selected = 0  // Määritellään alku
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))  // Uusi lista
 
-   // Vote || TOIMII mutta ei saa näytille / Vienti onnistuu vain return VoteStatistics
    const Vote = () => { 
+    const copyVotes =[...votes]
     votes[selected] += 1
-    console.log(votes, 'votesin lista')
-    return VoteStatistics (
-        votes[selected]
-    )
+    setVotes(copyVotes)
   }
 
-// Random || TOIMII mutta ei saa näytille / vietyä
   const RandomAnecdote = () => {
-    selected = Math.floor(Math.random()*8)
-    console.log(anecdotes[selected])
-    console.log(votes, 'lista randomissa')
-    return (
-      <>
-        {anecdotes[selected]}
-      </>
-    )
+    setSelected(Math.floor(Math.random()*anecdotes.length))
   }
 
   return (
     <div>
       <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
-      <VoteStatistics votelist={votes[selected]}/>
+      <VoteStatistics votelist={votes} selected={selected} />
       <br/>
       <Button handleClick={Vote} text='vote' />
       <Button handleClick={RandomAnecdote} text='next anecdote' />
