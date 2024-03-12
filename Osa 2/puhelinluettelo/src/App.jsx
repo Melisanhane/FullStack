@@ -158,6 +158,15 @@ Tämä toimii windows confirmaation alla niin, että päivittää suoraam selaim
           console.log(person.number, person.name)
         })
 
+
+
+        2.15 Tekemättä
+        2.16 On läppärillä
+        2.17 delete || hyödynnä .catch esim. .catch(() => {
+          setNotification(
+            `${updatedPerson.name} has already been removed from the server`
+          );
+
 */
 
 
