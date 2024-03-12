@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personsService from './services/persons'
 
 // Tässä on jo Filter ja Person komponentit yhdessä || LOOPPI
-const Numbers = ({name, number, id, find}) => {
+const Numbers = ({name, number, id, find, deletePerson}) => {
   // Filtteröinti
   if(name.startsWith(find)) {
     return (
       <div>
         {name} {number}
-        <button onClick={DeletePerson} name={name} id={id}>delete</button>
+        <button type="submit" onClick={deletePerson} name={name} id={id}>delete</button>      
       </div> 
     )
   }
@@ -18,22 +17,12 @@ const Numbers = ({name, number, id, find}) => {
     return(
       <div>
         {name} {number} 
-        <button onClick={DeletePerson} name={name} id={id}>delete</button>
+        <button type="submit" onClick={deletePerson} name={name} id={id}>delete</button>
       </div> 
     )
   }
 }
 
-// Toimii mutta ei saa päivitettyä
-const DeletePerson = (event) => {
-  event.preventDefault()
-  console.log(event.target)
-  if (window.confirm(`Delete ${event.target.name} ?`))
-  // Poistetaan nimi DELETE metodilla lomakkeelta 
-  personsService.del(event.target.id).then(response => {
-    console.log(`Deleted post with NAME ${event.target.name}`)
-  })
-}
 
 // LOOPPI || Jos tähän vaihtaa nimet ilman propsia, miksi ei toimi?? 
 const PersonForm = (props) => {
@@ -47,7 +36,7 @@ const PersonForm = (props) => {
         number: <input value={props.number} onChange={props.handleNumberChange}/>
       </div>
       <div>
-        <button type='submit' >add</button>
+        <button type='submit'>add</button>
       </div>
     </form>
     </>
@@ -69,30 +58,26 @@ const App = () => {
     })
   }, [])
 
-  // TARVIIKO SIIRTÄÄ OMAAN KOMPONENTTIIIN?? -----------------------------------------
+  // Nimen lisäys ja numeron päivitys
   const addName = (event) => {
     event.preventDefault()
     const NameObject = {
       name: newName,
       number: newNumber
     }
+    if (NameObject.name === '') {
+      alert (`give name`)
+      return
+    }
     if (NameObject.number === ' ') {
       alert (`give phone number`)
       return
     }
-    // Toimii mut ei päivitä JSONiin
     if (persons.some(person => person.name == newName)) {
+      const existingPerson = persons.find((person) => person.name === newName);
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        let person = persons.find((person) => person.name === newName)
-        // Updatetaan PUT metodilla lomake
-        personsService.update(person.id, person).then(response => {
-          person.number = newNumber
-          setPersons(persons.map((person) =>
-          person.id === person.id
-          ? person
-          : newNumber
-          ))
-        })
+        NumberUpdate(existingPerson)
+        return // turha
       }
       return  // Oltava koska muuten jatkaa ja luo uuden .create
     }
@@ -104,12 +89,31 @@ const App = () => {
     setNewNumber(' ')
   }
 
-  const UpdatePersonService = () => {
-    console.log('Personin upppaus')
-    // Upitaan nimi GET metodilla lomakkeelle
-    personsService.getAll().then(response => { App.setPersons(response.data) })
-  }
-// --------------------------------------------------------
+const DeletePerson = (event) => {
+  event.preventDefault()
+  console.log(event.target)
+  if (window.confirm(`Delete ${event.target.name} ?`))
+    personsService.del(event.target.id).then(response => {
+    console.log(`Deleted post with NAME ${event.target.name}`)
+    personsService.getAll().then(response => {setPersons(response.data) })
+  })
+}
+// Tämä päivittää okein .JSON tiedostoon mutta bugaa findiin || 2.15
+const NumberUpdate = (existingPerson) => {
+  const updatedPerson = {
+    ...existingPerson,
+    number: newNumber
+  };
+  console.log(updatedPerson)
+  personsService.update(updatedPerson.id, updatedPerson).then((response) => {
+    setPersons(persons.map((person) =>
+        person.id !== updatedPerson.id ? person : newNumber
+    ))
+    setNewName('')
+    setNewNumber(' ')
+    personsService.getAll().then(response => {setPersons(response.data) })
+  })
+}
 
   // TAPAHTUMAKÄSITTELIJÄT
   // Luodaan tapahtumakäsittelijät onChangeille jotta päästään käsiksi kontrolloituun syötekomponenttiin || LOOPPI
@@ -136,10 +140,25 @@ const App = () => {
       />
       <h2>Numbers</h2>
       {persons.map(numbers =>( 
-        <Numbers key={numbers.id} name={numbers.name} number={numbers.number} id={numbers.id} find={newFind} />
+        <Numbers key={numbers.id} name={numbers.name} number={numbers.number} id={numbers.id} find={newFind} deletePerson={DeletePerson} />
       ))}
     </div>
   )
 }
+/*
+Tämä toimii windows confirmaation alla niin, että päivittää suoraam selaimeenm || 2.15
+
+ let person = persons.find((person) => person.name === newName)
+        // Updatetaan PUT metodilla lomake
+        personsService.update(person.id, person).then(response => {
+          person.number = newNumber
+          setPersons(persons.map(person =>
+          person.id === person.id ? person : newNumber
+          ))
+          console.log(person.number, person.name)
+        })
+
+*/
+
 
 export default App
