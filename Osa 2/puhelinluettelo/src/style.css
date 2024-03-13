@@ -1,0 +1,11 @@
+.add {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+    width: 30%;
+    margin-bottom: 10px;
+    color: green;
+    background-color: rgba(128, 128, 128, 0.5);
+    border: 3px solid green;
+
+}

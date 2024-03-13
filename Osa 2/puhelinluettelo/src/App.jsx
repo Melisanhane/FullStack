@@ -43,6 +43,19 @@ const PersonForm = (props) => {
   )
 }
 
+// Looppaa alussa x2 ja toistaa itseään kun kirjoittaa hakukenttiin jtn
+const Notification =({message}) => {
+  console.log(message)
+  if (message === '') {
+    return 
+  }
+  return (
+    <div className='add'>
+      {message}
+    </div>
+  )
+}
+
 // MAIN
 const App = () => {
   // TILAKÄSITTELIJÄT || LOOPPI  
@@ -50,6 +63,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState(' ')
   const [newFind, setNewFind] = useState('')
+  const [addMessage, setAddMessage] = useState('')
 
   useEffect(() => {
     console.log('1. lomakkeen haku')
@@ -82,7 +96,12 @@ const App = () => {
       return  // Oltava koska muuten jatkaa ja luo uuden .create
     }
     personsService.create(NameObject).then(response => {
-      console.log( NameObject.name, 'lisätty listaan')
+      setAddMessage(
+        `Added ${NameObject.name}`
+      )
+      setTimeout(() => {
+        setAddMessage('')
+      }, 5000)
       setPersons(persons.concat(response.data))
     })
     setNewName('')
@@ -94,7 +113,12 @@ const DeletePerson = (event) => {
   console.log(event.target)
   if (window.confirm(`Delete ${event.target.name} ?`))
     personsService.del(event.target.id).then(response => {
-    console.log(`Deleted post with NAME ${event.target.name}`)
+      setAddMessage(
+        `Removed ${event.target.name}`
+      )
+      setTimeout(() => {
+        setAddMessage('')
+      }, 5000)
     personsService.getAll().then(response => {setPersons(response.data) })
   })
 }
@@ -109,6 +133,12 @@ const NumberUpdate = (existingPerson) => {
     setPersons(persons.map((person) =>
         person.id !== updatedPerson.id ? person : newNumber
     ))
+    setAddMessage(
+      `Number changed to ${NameObject.name}`
+    )
+    setTimeout(() => {
+      setAddMessage('')
+    }, 5000)
     setNewName('')
     setNewNumber(' ')
     personsService.getAll().then(response => {setPersons(response.data) })
@@ -130,6 +160,7 @@ const NumberUpdate = (existingPerson) => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={addMessage}/>
         <div>
           filter shown with <input value={newFind} onChange={handleFindPerson} />
         </div>
@@ -159,9 +190,8 @@ Tämä toimii windows confirmaation alla niin, että päivittää suoraam selaim
         })
 
 
-
+        Messaget lisätty
         2.15 Tekemättä
-        2.16 On läppärillä
         2.17 delete || hyödynnä .catch esim. .catch(() => {
           setNotification(
             `${updatedPerson.name} has already been removed from the server`
