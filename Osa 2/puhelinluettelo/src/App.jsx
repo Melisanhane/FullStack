@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import personsService from './services/persons'
+import './style.css'
 
-// Tässä on jo Filter ja Person komponentit yhdessä || LOOPPI
 const Numbers = ({name, number, id, find, deletePerson}) => {
-  // Filtteröinti
   if(name.startsWith(find)) {
     return (
       <div>
@@ -12,7 +11,6 @@ const Numbers = ({name, number, id, find, deletePerson}) => {
       </div> 
     )
   }
-  // Kaikki henkilöt
   if (find === ' ') {
     return(
       <div>
@@ -23,8 +21,6 @@ const Numbers = ({name, number, id, find, deletePerson}) => {
   }
 }
 
-
-// LOOPPI || Jos tähän vaihtaa nimet ilman propsia, miksi ei toimi?? 
 const PersonForm = (props) => {
   return (
     <>
@@ -43,11 +39,9 @@ const PersonForm = (props) => {
   )
 }
 
-// Looppaa alussa x2 ja toistaa itseään kun kirjoittaa hakukenttiin jtn
 const Notification =({message}) => {
-  console.log(message)
   if (message === '') {
-    return 
+    return
   }
   return (
     <div className='add'>
@@ -56,9 +50,7 @@ const Notification =({message}) => {
   )
 }
 
-// MAIN
 const App = () => {
-  // TILAKÄSITTELIJÄT || LOOPPI  
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState(' ')
@@ -72,7 +64,6 @@ const App = () => {
     })
   }, [])
 
-  // Nimen lisäys ja numeron päivitys
   const addName = (event) => {
     event.preventDefault()
     const NameObject = {
@@ -91,9 +82,8 @@ const App = () => {
       const existingPerson = persons.find((person) => person.name === newName);
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         NumberUpdate(existingPerson)
-        return // turha
       }
-      return  // Oltava koska muuten jatkaa ja luo uuden .create
+      return
     }
     personsService.create(NameObject).then(response => {
       setAddMessage(
@@ -121,8 +111,16 @@ const DeletePerson = (event) => {
       }, 5000)
     personsService.getAll().then(response => {setPersons(response.data) })
   })
+  .catch(error => {
+    setAddMessage(
+      `Information of ${event.target.name} has aldredy removed from server`
+    )
+    setTimeout(() => {
+      setAddMessage('')
+    }, 5000)
+  })
 }
-// Tämä päivittää okein .JSON tiedostoon mutta bugaa findiin || 2.15
+
 const NumberUpdate = (existingPerson) => {
   const updatedPerson = {
     ...existingPerson,
@@ -130,11 +128,8 @@ const NumberUpdate = (existingPerson) => {
   };
   console.log(updatedPerson)
   personsService.update(updatedPerson.id, updatedPerson).then((response) => {
-    setPersons(persons.map((person) =>
-        person.id !== updatedPerson.id ? person : newNumber
-    ))
     setAddMessage(
-      `Number changed to ${NameObject.name}`
+      `Number changed to ${updatedPerson.name}`
     )
     setTimeout(() => {
       setAddMessage('')
@@ -145,17 +140,15 @@ const NumberUpdate = (existingPerson) => {
   })
 }
 
-  // TAPAHTUMAKÄSITTELIJÄT
-  // Luodaan tapahtumakäsittelijät onChangeille jotta päästään käsiksi kontrolloituun syötekomponenttiin || LOOPPI
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
-  const handleFindPerson = (event) => {
-    setNewFind(event.target.value)
-  }
+const handleNameChange = (event) => {
+  setNewName(event.target.value)
+}
+const handleNumberChange = (event) => {
+  setNewNumber(event.target.value)
+}
+const handleFindPerson = (event) => {
+  setNewFind(event.target.value)
+}
 
   return (
     <div>
@@ -176,28 +169,5 @@ const NumberUpdate = (existingPerson) => {
     </div>
   )
 }
-/*
-Tämä toimii windows confirmaation alla niin, että päivittää suoraam selaimeenm || 2.15
-
- let person = persons.find((person) => person.name === newName)
-        // Updatetaan PUT metodilla lomake
-        personsService.update(person.id, person).then(response => {
-          person.number = newNumber
-          setPersons(persons.map(person =>
-          person.id === person.id ? person : newNumber
-          ))
-          console.log(person.number, person.name)
-        })
-
-
-        Messaget lisätty
-        2.15 Tekemättä
-        2.17 delete || hyödynnä .catch esim. .catch(() => {
-          setNotification(
-            `${updatedPerson.name} has already been removed from the server`
-          );
-
-*/
-
 
 export default App
