@@ -3,6 +3,7 @@ import axios, { all } from 'axios'
 // import countryService from './services/countries'
 
 // Löytää oikean maan ja päästään tänne mutta miten tulostetaan || 2.18
+// Tänne vielä pääkaupungin säätiedotus joltakin nettisivulta(https://openweathermap.org/) || API-avain käyttöön?
 const CountryInfo = (country) => {
   console.log(country.name.common)
   console.log(country.capital[0])
@@ -20,15 +21,11 @@ const CountryInfo = (country) => {
   )
 }
 
-// Eli tänne filtteröidyt maat 
-const filteredCountries = (filtered) => {
-  console.log('Täällä on filtteröidyt maat')
-}
-
 // MAIN
 const App = () => {
   const [search, setSearch] = useState('')
-  const [allCountries, setAllCountries] = useState('')
+  const [allCountries, setAllCountries] = useState('')  // Kaikki maat
+  const [countries, setCountries] = useState([])  // Yksittäinen maa
 
 // Haetaan kaikki maat palvelimelta 
   useEffect(() => {
@@ -42,9 +39,38 @@ const App = () => {
       })
   }, [])
 
-// Saako siirettyä pois APPista siten, että allCountries tulisi mukana
 const CountriesToShow = () => { 
 //  console.log('Jos bugaa, poista koodi ja console log ')
+// Show buttonin tapahtuma ||
+  const countrySelected = (country) => {
+    /*
+  // Haetaan yksittäiset maat palvelimelta kun pianetaan nappulaa SHOW
+  useEffect(() => {
+    axios
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
+      .then((result) => {
+        setCountries(result.data)
+      })
+      .catch((error) => {
+        console.log('error message')
+      })
+  }, [])
+    */
+
+/* Tämä pitää vissiin hakea lista ensiksi eikä suoraan linkillä? || vaihtoehtona submit
+    axios
+    .post(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
+    .then((response) => {
+      console.log('post onnistui')
+    })
+    .catch((error) => {
+      console.log('post epäonnistui')
+    })
+*/
+  };
+
+
+
     //  Maiden filtteröinti 
     let filterCountries = allCountries.filter((country) =>
     country.name.common.toLowerCase().startsWith(search.toLowerCase())
