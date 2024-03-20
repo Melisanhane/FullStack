@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios, { all } from 'axios'
-// import countryService from './services/countries'
 
 // Löytää oikean maan ja päästään tänne mutta miten tulostetaan || 2.18
-// Tänne vielä pääkaupungin säätiedotus joltakin nettisivulta(https://openweathermap.org/) || API-avain käyttöön?
+// Tänne vielä pääkaupungin säätiedotus joltakin nettisivulta(https://www.foreca.fi/Finland/Helsinki) || API-avain käyttöön?
 const CountryInfo = (country) => {
   console.log(country.name.common)
   console.log(country.capital[0])
@@ -16,18 +15,19 @@ const CountryInfo = (country) => {
       capital {country.capital[0]}
       area {country.borders.area}
       <h3>languages</h3>
-      {country.flag}
+      <img src="{country.flag}" alt="flag"></img>
     </div>
   )
+// {`https://www.foreca.fi/${country.name.common}/${country.capital[0]}`} <-- Tämä jotenkin tänne
 }
 
 // MAIN
 const App = () => {
   const [search, setSearch] = useState('')
-  const [allCountries, setAllCountries] = useState('')  // Kaikki maat
-  const [countries, setCountries] = useState([])  // Yksittäinen maa
+  const [allCountries, setAllCountries] = useState('')
+  const [countries, setCountries] = useState([])
 
-// Haetaan kaikki maat palvelimelta 
+// Haetaan aluksi kaikki maat palvelimelta 
   useEffect(() => {
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/all/`)
@@ -40,39 +40,35 @@ const App = () => {
   }, [])
 
 const CountriesToShow = () => { 
-//  console.log('Jos bugaa, poista koodi ja console log ')
-// Show buttonin tapahtuma ||
+// Haetaan maat palvelimelta SHOW btn tapahtuma
   const countrySelected = (country) => {
-    /*
-  // Haetaan yksittäiset maat palvelimelta kun pianetaan nappulaa SHOW
-  useEffect(() => {
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
-      .then((result) => {
-        setCountries(result.data)
+      .then((response) => {
+        setCountries(response.data)
+        console.log('GET succesfully')
+        PostCountry(response.data)
       })
       .catch((error) => {
-        console.log('error message')
+        console.log('GET error message')
       })
-  }, [])
-    */
-
-/* Tämä pitää vissiin hakea lista ensiksi eikä suoraan linkillä? || vaihtoehtona submit
+    }
+// Postaa maan || 404 vaikka toimiikin?
+  const PostCountry = (countries) => {
+    debugger
     axios
-    .post(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
+    .post(`https://studies.cs.helsinki.fi/restcountries/api/name/${countries.name.common}`)
+    // ^^  https://studies.cs.helsinki.fi/restcountries/api/name/Sweden 404 ??
     .then((response) => {
-      console.log('post onnistui')
+      console.log('POST succesfully')
     })
     .catch((error) => {
-      console.log('post epäonnistui')
+      console.log('POST error message')
     })
-*/
   };
 
-
-
-    //  Maiden filtteröinti 
-    let filterCountries = allCountries.filter((country) =>
+//  Maiden filtteröinti 
+  let filterCountries = allCountries.filter((country) =>
     country.name.common.toLowerCase().startsWith(search.toLowerCase())
   )
   if (search !== '') {
@@ -85,7 +81,7 @@ const CountriesToShow = () => {
       const country = filterCountries[0]
       CountryInfo(country)
     }
-    else {  // Tämän voi yrittää kanssa laittaa omaansa
+    else {
       return filterCountries.map((country) => (
         <div key={country.cca3}>
             <span>
@@ -98,9 +94,8 @@ const CountriesToShow = () => {
   }
 }
 
-// TAPAHTUMAKÄSITTELIJÄ
   const handleSearchChange = (event) => {
-    setSearch(event.target.value) // inputti value
+    setSearch(event.target.value) 
   }
 
   return (
@@ -114,73 +109,5 @@ const CountriesToShow = () => {
     </>
   )
 }
-
-/*
-
-2.18 --- Pitäisi saada yksittäinen maa tulostettua
-2.19 -- napin painallus avaa uuden sivun https://studies.cs.helsinki.fi/restcountries/api/name/{HALUTTU MAA}
-
-
-
-
-
-const CountriesToShow = () => {   
-    const countrySelected = (country) => {
-      setCountries([country])
-      //setSelected(setCountries([country])) // creating a separte state is not working when button is clicked 
-      // setSeach("") // this would blog the if statement below 
-    };
-    if (search !== "") {
-      ->
-      else if (filterCountries.length === 1) {
-        const country = filterCountries[0];
-        return <CountryInfo country={country} />;
-      } else {
-        return filterCountries.map((country) => (
-          <div key={country.cca3}>
-            <span>
-              {country.name.common}
-              <button onClick={() => countrySelected(country)}>show</button>
-            </span>
-          </div>
-        ));
-      }
-    }
-  };
-
-
-
-return (
-    <>
-      <Filter value={searchTerm} onChange={handleChange} />
-      <CountriesContainer countries={filteredCountries} />
-    </>
-  )
-
-
-const Countries = (param) => {
-  const { maat } = param;
-  f (Object.keys(maat).length > 10) {
-    return <div>Too many matches, specify another filter</div>;
-  } else {
-    if (Object.keys(maat).length === 0) {
-      return <div>No countries found</div>;
-    }
-    maat.map((country) => {
-      console.log(country.cca3, country.name.common);
-      return <li key={country.cca3}>{country.name.common}</li>;
-    });
-  }
-};
-
-
-
-
-Maat löytyy sivulta 
-https://studies.cs.helsinki.fi/restcountries/
-
-package.json > "server": "json-server -p3001 --watch XX.json" <-- Tarvviiko?
-
-*/
 
 export default App
