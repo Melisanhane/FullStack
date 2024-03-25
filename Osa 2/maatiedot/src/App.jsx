@@ -1,43 +1,31 @@
 import { useState, useEffect } from 'react'
-import axios, { all } from 'axios'
+import axios from 'axios'
 
-// MAIN
-const App = () => {
-  const [search, setSearch] = useState('')
-  const [allCountries, setAllCountries] = useState('')
-  const [countries, setCountries] = useState([])
-  const [cityWeather, setCityWeather] = useState(null)
 
-  const api_key = import.meta.env.VITE_OPEN_WEATHER_API;
-
-// Haetaan aluksi kaikki maat palvelimelta 
+const CountryWeather = (country) => {
+  console.log(country.capital)
+  const apiKey = import.meta.env.VITE_OWM_API_KEY
+// const apiKey = process.env.VITE_REACT_APP_WEATHERSTACK_API_KEY;
+  const [capitalWeather, setCapitalWeather] = useState({});
+ 
   useEffect(() => {
     axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/all/`)
-      .then((result) => {
-        setAllCountries(result.data)
-      })
-      .catch((error) => {
-        console.log('error message')
-      })
-  }, [])
+      .get(`https://api.openweathermap.org/data/2.5/weather?`) // OIKEA OSOITE -> https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}
+      .then((response) => {setCapitalWeather(response.data)})
+      .catch((error) => {console.log("Error fetching weather data:", error)});
+  }, [country])
 
-const CountriesToShow = () => { 
-// console.log(".")
-// Haetaan maat palvelimelta SHOW btn tapahtuma 
-const countrySelected = (country) => {
-  axios
-    .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
-    .then((response) => {
-      setCountries(response.data)
-      console.log('GET succesfully')
-      PostCountry(response.data)
-    })
-    .catch((error) => {
-      console.log('GET error message')
-    })
-  }
-// Postaa maan || 404 vaikka toimiikin?
+    console.log(capitalWeather.current?.temperature)
+  return (
+    <div>
+      <h2>Weather in {country.capital}</h2>
+      <p>Temperature: {capitalWeather.current?.temperature}</p>
+    </div>
+  );
+//  <img src={country.flags.png} alt={country.flags.alt}></img> 
+};
+
+// Postaa maan || 404 vaikka osoite on oikea?
 const PostCountry = (countries) => {
   debugger
   axios
@@ -51,6 +39,40 @@ const PostCountry = (countries) => {
   })
 };
 
+// MAIN
+const App = () => {
+  const [search, setSearch] = useState('')
+  const [allCountries, setAllCountries] = useState('')
+  const [countries, setCountries] = useState([])
+
+// Haetaan aluksi kaikki maat palvelimelta 
+  useEffect(() => {
+    axios
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/all/`)
+      .then((result) => {
+        setAllCountries(result.data)
+      })
+      .catch((error) => {
+        console.log('error message')
+      })
+  }, [])
+
+// Haetaan maat palvelimelta SHOW btn tapahtuma 
+const countrySelected = (country) => {
+  axios
+    .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.name.common}`)
+    .then((response) => {
+      setCountries(response.data)
+      console.log('GET succesfully')
+      PostCountry(response.data)
+    })
+    .catch((error) => {
+      console.log('GET error message')
+    })
+  }
+
+const CountriesToShow = () => { 
+// console.log(".")
 //  Maiden filtteröinti 
 let filterCountries = allCountries.filter((country) =>
   country.name.common.toLowerCase().startsWith(search.toLowerCase())
@@ -76,10 +98,8 @@ if (search !== '') {
           ))}
         </ul>
         <img src={country.flags.png} alt={country.flags.alt}></img>
-        <h2>Weather in {country.capital[0]}</h2>
+        <CountryWeather />
       </div>
-      // {`https://www.foreca.fi/${country.name.common}/${country.capital[0]}`} <-- Tämä jotenkin tänne
-
     )
   }
   else {
@@ -92,7 +112,7 @@ if (search !== '') {
         </div>
     ))
   }
-}
+} // Tähän astri pois
 }
 
   const handleSearchChange = (event) => {
@@ -110,33 +130,5 @@ if (search !== '') {
     </>
   )
 }
-/*
-const apiKey = process.env.VITE_REACT_APP_WEATHERSTACK_API_KEY;
-
-const Weather = ({ country }) => {
-  const [capitalWeather, setCapitalWeather] = useState({});
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://api.weatherstack.com/current?access_key=${apiKey}&query=${country.capital}`
-      )
-      .then((response) => {
-        setCapitalWeather(response.data);
-      })
-
-      .catch((error) => {
-        console.log("Error fetching weather data:", error);
-      });
-  }, [country]);
-
-  return (
-    <div>
-      <h2>Weather in {country.capital}</h2>
-      <p>Temperature: {capitalWeather.current?.temperature}</p>
-    </div>
-  );
-};
-*/
 
 export default App
