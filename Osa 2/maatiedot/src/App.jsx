@@ -3,40 +3,41 @@ import axios from 'axios'
 
 
 const CountryWeather = (country) => {
-  console.log(country.capital)
-  const apiKey = import.meta.env.VITE_OWM_API_KEY
-// const apiKey = process.env.VITE_REACT_APP_WEATHERSTACK_API_KEY;
-  const [capitalWeather, setCapitalWeather] = useState({});
+//  const apiKey = import.meta.env.REACT_APP_VITE_KEY
+  const [capitalWeather, setCapitalWeather] = useState(null)
+  const apiKey = import.meta.env.REACT_APP_VITE_KEY
+  console.log(apiKey)
  
-  useEffect(() => {
-    axios
-      .get(`https://api.openweathermap.org/data/2.5/weather?`) // OIKEA OSOITE -> https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}
-      .then((response) => {setCapitalWeather(response.data)})
-      .catch((error) => {console.log("Error fetching weather data:", error)});
-  }, [country])
-
-    console.log(capitalWeather.current?.temperature)
+  useEffect(() => { async () => { 
+    try {
+      const response = await 
+        axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?q=${country.capital}&appid=${apiKey}&units=metric`)
+        setCapitalWeather(response.data)
+    }
+    catch(error){console.error('Error fetching weather data:', error)} 
+  }}, [apiKey]) 
+  }
+// Tämän pitää näyttää maa painamalla show nappia eli yksittäinen maatiedot tähän 
+// ei palauta mtn
+const ShowCountry = (country) => {
+  console.log(country)
+  CountryWeather(country)
   return (
     <div>
-      <h2>Weather in {country.capital}</h2>
-      <p>Temperature: {capitalWeather.current?.temperature}</p>
-    </div>
-  );
-//  <img src={country.flags.png} alt={country.flags.alt}></img> 
-};
-
-// Postaa maan || 404 vaikka osoite on oikea?
-const PostCountry = (countries) => {
-  debugger
-  axios
-  .post(`https://studies.cs.helsinki.fi/restcountries/api/name/${countries.name.common}`)
-  // ^^  https://studies.cs.helsinki.fi/restcountries/api/name/Sweden 404 ??
-  .then((response) => {
-    console.log('POST succesfully')
-  })
-  .catch((error) => {
-    console.log('POST error message')
-  })
+    <h1>{country.name.common}</h1>
+    <p>capital: {country.capital[0]}</p>
+    <p>area: {country.area}</p>
+    <h3>languages</h3>
+    <ul>
+      {Object.entries(country.languages).map(([code, lang]) => (
+        <li key={code}>{lang}</li>
+      ))}
+    </ul>
+    <img src={country.flags.png} alt={country.flags.alt}></img>
+    <CountryWeather />
+  </div>
+)
 };
 
 // MAIN
@@ -64,7 +65,7 @@ const countrySelected = (country) => {
     .then((response) => {
       setCountries(response.data)
       console.log('GET succesfully')
-      PostCountry(response.data)
+      ShowCountry(response.data)
     })
     .catch((error) => {
       console.log('GET error message')
@@ -85,7 +86,9 @@ if (search !== '') {
   }
   else if (filterCountries.length === 1) {
     const country = filterCountries[0]
-    CountryWeather(country)
+//    CountryWeather(country)
+    ShowCountry(country)
+  /*
     return (
       <div>
         <h1>{country.name.common}</h1>
@@ -101,6 +104,7 @@ if (search !== '') {
         <CountryWeather />
       </div>
     )
+  */  
   }
   else {
     return filterCountries.map((country) => (
