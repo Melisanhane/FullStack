@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+/*
+Tämä käynnistää sovelluksen ja tästä valitaan millä ohjelmalla käynnistät
+export VITE_SOME_KEY=54l41n3n4v41m34rv0 && npm run dev // 
+  Linux/macOS Bash <--. Tällä koska BASH
+($env:VITE_SOME_KEY="54l41n3n4v41m34rv0") -and (npm run dev) // 
+  Windows PowerShell
+set "VITE_SOME_KEY=54l41n3n4v41m34rv0" && npm run dev // 
+  Windows cmd.exe
+Tämä VITE-SOME-KEY lisätään jotenkin näin
+axios
+        .get(`https:/api.openweathermap.org/data/2.5/weather?q=${countriesToShow[0].capital[0]}&appid=${process.env.VITE_SOME_KEY}`)
+        */
 
 const CountryWeather = (country) => {
 //  const apiKey = import.meta.env.REACT_APP_VITE_KEY
