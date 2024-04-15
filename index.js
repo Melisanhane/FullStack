@@ -41,6 +41,7 @@ app.use(requestLogger)  // MIDDLEWARE
 app.use(cors())
 console.log('-----')
 app.use(morgan(':method :url :status :response-time ms :body'))
+app.use(express.static('dist')) // Saadaan sivu näyttämään index.html
 
 // Middleware joka luo routejen käsittelemättömistä virhetilanteista JSON-muotoisen virheilmoituksen
 const unknownEndpoint = (request, response) => {
