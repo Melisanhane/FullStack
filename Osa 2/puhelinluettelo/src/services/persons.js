@@ -1,6 +1,8 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/persons' // personi listan sijainti
+const baseUrl = 'api/persons'
+// Kun muokataan, täytyy production build (npm run bulid) ja kopioida dist BackEndin juureen
 
+ 
 const getAll = () => {
   return axios.get(baseUrl)
 }

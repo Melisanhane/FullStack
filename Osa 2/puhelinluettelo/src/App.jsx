@@ -42,12 +42,25 @@ const PersonForm = (props) => {
 const Notification =({message}) => {
   if (message === '') {
     return
-  }
+  } if (message.includes('name:')) {
+    return (
+      <div className='error'>
+           Name is shorter than the minimum allowed length
+       </div>
+    )
+  } if (message.includes('number:')) {
+    return (
+       <div className='error'>
+        Number is shorter than the minimum allowed length
+      </div>
+  )
+  } else {
   return (
     <div className='add'>
       {message}
     </div>
   )
+}
 }
 
 const App = () => {
@@ -62,7 +75,7 @@ const App = () => {
     personsService.getAll().then(response => {
       setPersons(response.data)
     })
-  }, [])
+  }, []) 
 
   const addName = (event) => {
     event.preventDefault()
@@ -86,21 +99,26 @@ const App = () => {
       return
     }
     personsService.create(NameObject).then(response => {
-      setAddMessage(
-        `Added ${NameObject.name}`
-      )
+      setAddMessage(`Added ${NameObject.name}`)
       setTimeout(() => {
         setAddMessage('')
       }, 5000)
       setPersons(persons.concat(response.data))
     })
+    // ERRORS
+      .catch(error => {
+        console.log(error.response.data.error)
+        setAddMessage(error.response.data.error)
+        setTimeout(() => {
+          setAddMessage('')
+        }, 5000)
+      })
     setNewName('')
     setNewNumber(' ')
   }
 
 const DeletePerson = (event) => {
   event.preventDefault()
-  console.log(event.target)
   if (window.confirm(`Delete ${event.target.name} ?`))
     personsService.del(event.target.id).then(response => {
       setAddMessage(
