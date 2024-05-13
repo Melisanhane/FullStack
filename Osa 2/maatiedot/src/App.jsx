@@ -5,15 +5,13 @@ const ShowCountry = (country) => {
   console.log(country)
   const apiKey = import.meta.env.VITE_OPEN_WEATHER_API
   const [capitalWeather, setCapitalWeather] = useState(null)
-
-  console.log(apiKey)
   useEffect(() => {
     getWeather(country.latlng[0], country.latlng[1]);
   });
-
+  
   const getWeather = async (lat, lon) => {
     await axios
-      .get(`https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${lat}&lon=${lon}&appid=${apiKey}`)
+      .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
       .then((response) => setCapitalWeather(response.data));
   };
   return (
@@ -46,17 +44,42 @@ const ShowCountry = (country) => {
         )}
       </div>
     </div>
-)
+  )
 };
 
+const CountriesToShow = (filtered) => { 
+  console.log(filtered.countries.length)
+  const countries = filtered.countries
+  if (countries.length === 250) {
+  return
+  }
+  if (countries.length > 10) {
+    return (
+      <div>Too many matches, specify another filter</div>
+    )
+  }
+  if (countries.length === 1) {
+    const country = countries[0]
+      return ShowCountry(country)
+  }
+  else {
+    return countries.map((country) => (
+      <div key={country.cca3}>
+        <span>
+          {country.name.common}
+          <button onClick={() => ShowCountry(country)}>show</button>
+        </span>
+      </div>
+    ))
+  }
+}
+ 
 // MAIN
 const App = () => {
-  const [search, setSearch] = useState('')
   const [allCountries, setAllCountries] = useState('')
   const [countries, setCountries] = useState([])
 
   useEffect(() => {
-    console.log('Haetaan maat sivustolta ensimmäisenä')
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/all/`)
       .then((result) => {
@@ -67,44 +90,20 @@ const App = () => {
       })
   }, [])
 
-const CountriesToShow = () => { 
-  let filterCountries = allCountries.filter((country) =>
-    country.name.common.toLowerCase().startsWith(search.toLowerCase())
-  )
-  if (search !== '') {
-    if (filterCountries.length > 10) {
-      return (
-        <div>Too many matches, specify another filter</div>
-      )
-    }
-    if (filterCountries.length === 1) {
-      const country = filterCountries[0]
-      return ShowCountry(country)
-    }
-    else {
-      return filterCountries.map((country) => (
-        <div key={country.cca3}>
-            <span>
-              {country.name.common}
-              <button onClick={() => ShowCountry(country)}>show</button>
-            </span>
-          </div>
-      ))
-    }
-  }
-}
-
   const handleSearchChange = (event) => {
-    setSearch(event.target.value) 
+    const searchTerm = event.target.value
+    setCountries (allCountries.filter((country) =>
+      country.name.common.toLowerCase().includes(searchTerm)
+    ))
   }
 
   return (
     <>
       <div>
-        find countries <input value={search} onChange={handleSearchChange} />
+        find countries <input type='text' onChange={handleSearchChange} />
       </div>
       <div>
-        <CountriesToShow />
+        <CountriesToShow countries={countries}/>
       </div>
     </>
   )
