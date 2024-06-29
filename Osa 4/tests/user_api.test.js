@@ -8,7 +8,7 @@ const api = supertest(app)  // Kääritään sovellus ns. superagent-olioksi (pi
 const bcrypt = require('bcrypt')        // algoritmin tuonti salasanojen määrittämiseen/käsittelyyn tietokantaan
 const User = require('../models/user')
 
-/*
+
 beforeEach(async () => {
   await Users.deleteMany({});
   const userObjs = helper.initialUsers.map((user) => new Users(user));
@@ -30,7 +30,7 @@ describe('User test', () => {
   
       await user.save()
     })
-      
+      */
   })
   
     test.only('creation succeeds with a fresh username', async () => {
@@ -103,4 +103,3 @@ describe('User test', () => {
 after(async () => {
   await mongoose.connection.close()
 })
-*/
