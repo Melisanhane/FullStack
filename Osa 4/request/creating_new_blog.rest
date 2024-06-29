@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRhaU1pIiwiaWQiOiI2NjdiZjMyMGI3MjhjOWVkNTY0NzY2MzAiLCJpYXQiOjE3MTk2NTA2MjgsImV4cCI6MTcxOTY1NDIyOH0.eXIi0RNS-ScV9uBFZixPtIzZjXrSA94yx_-AqUgUM4g
+
+{
+        "title": "Hevoinen",
+        "author": "Taija Mitronen",
+        "url": "www.hevoisia.fi",
+        "likes": 2
+}

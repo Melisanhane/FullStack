@@ -4,7 +4,7 @@ import axios from 'axios'
 const ShowCountry = (country) => {
   console.log(country)
   const apiKey = import.meta.env.VITE_OPEN_WEATHER_API
-  const [capitalWeather, setCapitalWeather] = useState(null)
+  const [capitalWeather, setCapitalWeather] = useState(null)  // Show napista tekee errorin koska invalid Hook call
   useEffect(() => {
     getWeather(country.latlng[0], country.latlng[1]);
   });
@@ -93,7 +93,7 @@ const App = () => {
   const handleSearchChange = (event) => {
     const searchTerm = event.target.value
     setCountries (allCountries.filter((country) =>
-      country.name.common.toLowerCase().includes(searchTerm)
+      country.name.common.toLowerCase().startsWith(searchTerm)
     ))
   }
 
