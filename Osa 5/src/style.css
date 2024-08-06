@@ -1,0 +1,58 @@
+/* NOTIFICATIONS */
+.add {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+    width: 60%;
+    margin-bottom: 10px;
+    color: green;
+    background-color: rgba(128, 128, 128, 0.5);
+    border: 3px solid green;
+}
+.error {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+    width: 60%;
+    margin-bottom: 10px;
+    color: red;
+    background-color: rgba(128, 128, 128, 0.5);
+    border: 3px solid red;
+}
+/* BLOG VIEW STYLES */
+.blogBox {
+    padding: 5px;
+    font-size: auto;
+    border: solid grey 0.5px; 
+}
+
+.visibility {
+    border-radius: 10%;
+    padding: 2px 5px;
+    margin-left: 10px;
+    border: solid black 0.2px;
+    cursor: pointer;
+}
+
+.like {
+    font-size: 12px;
+    margin-left: 10px;
+    border-radius: 20%;
+    border: 1px;
+    background-color: lightblue;
+    cursor: pointer;
+}
+.like:hover {
+    background-color: lightpink;
+    cursor: pointer;
+}
+.remove {
+    border-radius: 10%;
+    padding: 2px 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border: solid black 0.2px;
+    color: red;
+    font-weight: 700;
+    cursor: pointer;
+}

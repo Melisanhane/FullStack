@@ -30,7 +30,6 @@ blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async
     }
     else {
         const savedBlog = await blog.save()
-        user.blogs = user.blogs.concat(savedBlog._id) 
         await user.save()
         response.status(201).json(savedBlog)
     } 
@@ -68,6 +67,17 @@ blogsRouter.put('/:id', async (request, response) => {
       new: true,
     })
     response.status(200).json(updatedBlog)
+/*
+  // vaihtoehtoinen mutta ei toimi
+  try {
+    const updatedBlog = await 
+      Blog.findByIdAndUpdate(request.params.id, request.body, {new: true,})
+    response.status(200).json(updatedBlog)
+  }
+  catch (error) {
+    response.status(500).send(error)
+  }
+*/
   })
 
 module.exports = blogsRouter
