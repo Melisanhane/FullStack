@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef } from 'react'
-
+import PropTypes from 'prop-types'
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
@@ -13,9 +13,14 @@ const Togglable = forwardRef((props, ref) => {
   // useImperativeHandle = hook, jota on mahdollista kutsua sen ulkopuolella
   useImperativeHandle(ref, () => {
     return {
-      toggleVisibility    
-    }  
+      toggleVisibility
+    }
   })
+  // Määritellään pakolliseksi kentäksi, antaa errorin konsoliin
+  Togglable.displayName = 'Togglable'
+  Togglable.propTypes = {
+    buttonlabel: PropTypes.string.isRequired
+  }
 
   return (
     <div>

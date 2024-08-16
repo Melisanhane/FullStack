@@ -1,6 +1,5 @@
 // BLOGILISTAUS
-
-import {useState} from 'react'
+import { useState } from 'react'
 import blogService from '../services/blogs'
 // import Notification from '../components/Notification'
 // import likeService from '../services/likes'
@@ -16,11 +15,11 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
     setVisible(!visible)
   }
 
-// 404 Not Found
+  // Pitäidi toimia oikein mutta ei toimi
   const addLike = (id, newObject) => {
-    debugger
     console.log(blog.id)
-    blogService.update(id, newObject)
+    console.log(newObject.likes+1)
+    blogService.update(id, newObject.likes+1)
       .then(returnedBlog => {
         setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
         console.log('blogi liketetty')
@@ -36,31 +35,24 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
     }
   }
 
-  // SORT BLOGS ON LIKES || Toimii mutta pitäisi saada vietyä oikeaan paikkaan eli blog
-    const sortedBlogs = blogs.sort((a, b) => {
-      return b.likes - a.likes
-    })
-    console.log(sortedBlogs)
-
   return (
     <div className="blogBox">
       <div style={hideWhenVisible}>
-        {blog.title}<button onClick={toggleVisibility} className='visibility'>view </button>
+        {blog.title}<button onClick={toggleVisibility} className='visibility'>view</button>
       </div>
       <div style={showWhenVisible}>
-        <div>
-          {blog.title}<button onClick={toggleVisibility} className='visibility'>hide</button>
-        </div>
+        {blog.title}<button onClick={toggleVisibility} className='visibility'>hide</button>
+        <br/>
         {blog.author}
-        <div>
-          likes {blog.likes}<button onClick={() => addLike(blog.id, blog)} className="like">like</button>
-        </div>
+        <br/>
+        Likes {blog.likes}<button onClick={() => addLike(blog.id, blog)} className="like">like</button>
+        <br/>
         {blog.url}
         <br/>
         <button onClick={() => removeBlog(blog.id, user)} className="remove">remove</button>
       </div>
-    </div>  
-)
+    </div>
+  )
 }
 
 export default Blog

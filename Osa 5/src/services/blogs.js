@@ -12,23 +12,29 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-const create = async newObject => {
-  const config = {    
-    headers: { Authorization: token },  
-  }
-  const response = await axios.post(baseUrl, newObject, config) 
+const create = async (newObject) => {
+  debugger
+  const response = await axios.post(baseUrl, newObject, {headers: { Authorization: `bearer ${token}` }}) 
   return response.data
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
+  debugger  
+  // herjaa jwt must be provided
+  const response = axios.put(`${baseUrl}/${id}`, newObject)
+  return response.data
 }
 
 const remove = async (id, user) => {  
-  const response = await axios.delete(`${baseUrl}/${id}`, {headers: { Authorization: `bearer ${user.token}` }})
+  debugger
+  console.log(user)
+  // herjaa jwt must be provided || tokeni kusee jotenkin
+  console.log(user.token)
+  console.log(token)
+  const response = await axios.delete(`${baseUrl}/${id}`, { Authorization: `${token}` })
+  console.log(response)
   return response.data
-}
+  }
 
 /*
 // Tämä on sama kuin update eli ei välttis tarvisi
