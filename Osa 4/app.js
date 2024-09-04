@@ -7,7 +7,6 @@ const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const likesRouter = require('./controllers/likes') // Tarvitseeko
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -32,7 +31,6 @@ app.use(middleware.userExtractor)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/likes', likesRouter)  // Tarvitseeko
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

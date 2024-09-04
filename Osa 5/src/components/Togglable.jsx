@@ -10,13 +10,11 @@ const Togglable = forwardRef((props, ref) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  // useImperativeHandle = hook, jota on mahdollista kutsua sen ulkopuolella
   useImperativeHandle(ref, () => {
     return {
       toggleVisibility
     }
   })
-  // Määritellään pakolliseksi kentäksi, antaa errorin konsoliin
   Togglable.displayName = 'Togglable'
   Togglable.propTypes = {
     buttonlabel: PropTypes.string.isRequired
@@ -27,7 +25,7 @@ const Togglable = forwardRef((props, ref) => {
       <div style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}create new blog</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
@@ -36,9 +34,3 @@ const Togglable = forwardRef((props, ref) => {
 })
 
 export default Togglable
-/*
-  Jos siirtää tänne, create ei toimi mutta sivu ei fressaa
-        <button type="submit" onClick={toggleVisibility}>create</button>
-
-        button cancel näkyy blogiformis
-*/

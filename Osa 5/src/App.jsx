@@ -37,8 +37,9 @@ const App = () => {
   }, [])
 
   const addBlog = (blogObject) => {
-  //  event.preventDefault()
     blogFormRef.current.toggleVisibility()
+    /*
+    // Tätä ei tarvitse
     blogService.create(blogObject).then(returnedBlog => {
       setBlogs(blogs.concat(returnedBlog))
       setNotification('blog-added')
@@ -47,6 +48,7 @@ const App = () => {
     setTimeout(() => {
       setNotification(null)
     }, 5000)
+    */
   }
 
   const handleLogin = async (event) => {
@@ -59,6 +61,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      // Tällä saadaan tokenin experies
+      //   const token = jwt.sign(userForToken, process.env.SECRET,{ expiresIn: 60*60 })
     }
 
     catch (exception) {
@@ -83,12 +87,12 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-          <input type="text" value={username} name="Username" onChange={({ target }) =>
+          <input type="text" data-testid='username' value={username} name="Username" onChange={({ target }) =>
             setUsername(target.value)}/>
         </div>
         <div>
           password
-          <input type="password" value={password} name="Password" onChange={({ target }) =>
+          <input type="password" data-testid='password' value={password} name="Password" onChange={({ target }) =>
             setPassword(target.value)}/>
         </div>
         <button type="submit">login</button>
@@ -101,7 +105,7 @@ const App = () => {
       {!user && loginForm()}
       {user && <div>
         <p>{user.name} logged in <button onClick={handleLogOut}>log out</button></p>
-
+        <Notification notification={notification}/>
         <h2>blogs</h2>
         <ul>
           {blogs.sort((a, b) => b.likes - a.likes).map(blog =>

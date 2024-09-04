@@ -4,7 +4,7 @@ const baseUrl = '/api/blogs'
 let token = null
 
 const setToken = newToken => {  
-  token = `Bearer ${newToken}`
+  token = newToken
 }
 
 const getAll = () => {
@@ -13,36 +13,21 @@ const getAll = () => {
 }
 
 const create = async (newObject) => {
-  debugger
-  const response = await axios.post(baseUrl, newObject, {headers: { Authorization: `bearer ${token}` }}) 
+  const response = await axios.post(baseUrl, newObject, {headers: { Authorization: `Bearer ${token}`, }}) 
   return response.data
 }
 
 const update = (id, newObject) => {
-  debugger  
-  // herjaa jwt must be provided
+  console.log(newObject)
   const response = axios.put(`${baseUrl}/${id}`, newObject)
   return response.data
 }
 
 const remove = async (id, user) => {  
-  debugger
-  console.log(user)
-  // herjaa jwt must be provided || tokeni kusee jotenkin
-  console.log(user.token)
-  console.log(token)
-  const response = await axios.delete(`${baseUrl}/${id}`, { Authorization: `${token}` })
-  console.log(response)
+  const response = await axios.delete(`${baseUrl}/${id}`, {headers: { Authorization: `Bearer ${user.token}`, }})
   return response.data
   }
-
-/*
-// Tämä on sama kuin update eli ei välttis tarvisi
-const likes = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
-}
-*/
+  
 export default { 
   getAll, create, update, setToken, remove 
 }

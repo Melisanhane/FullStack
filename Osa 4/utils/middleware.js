@@ -11,9 +11,7 @@ const requestLogger = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-  
-  // Tämä toimii gettiin
-  
+
   const authorization = request.get("authorization");
   if (authorization && authorization.startsWith("Bearer ", "")) {
     request.token = authorization.replace("Bearer ", "");
@@ -26,15 +24,6 @@ const userExtractor = async (request, response, next) => {
     request.user = null;
   }
   next();
-  /*
-  //  Tämä toimii postaukseen ja poistoon
-  	const decodedToken = jwt.verify(request.token, process.env.SECRET)
-	else if(!request.token || !decodedToken.id){
-		return response.status(401).json({ error: "Error: Missing or invalid token." })
-	}
-	request.user = await User.findById(decodedToken.id)
-	next()
- */
 }
 
 const tokenExtractor = async (request, response, next) => {

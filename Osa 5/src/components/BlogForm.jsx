@@ -1,9 +1,7 @@
-// CREATE NEW BLOG
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import Notification from '../components/Notification'
 
-// BLOGFORM || Heittää error 500 mutta toimii
 const BlogForm = (props) => {
 
   const [notification, setNotification] = useState(null)
@@ -12,7 +10,6 @@ const BlogForm = (props) => {
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
 
-  // ADD BLOG || tätä muokattava että palattaisiin APP
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
@@ -20,12 +17,10 @@ const BlogForm = (props) => {
       author: newBlogAuthor,
       url: newBlogUrl,
       date: new Date().toISOString(),
-    //  important: Math.random() > 0.5,
     }
-    blogService.create(blogObject).then(returnedBlog => {
-    //  setBlogs(blogs.concat(returnedBlog))
+    blogService.create(blogObject).then(
       setNotification('add')
-    })
+    )
 
     setTimeout(() => {
       setNotification(null)
@@ -50,11 +45,12 @@ const BlogForm = (props) => {
 
   return (
     <div>
+    <Notification notification={notification}/>
       <h2>create new</h2>
       <form onSubmit={addBlog}>
-        <p>Title: <input value={newBlog} onChange={handleBlogChange}/></p>
-        <p>Author: <input value={newBlogAuthor} onChange={handleAuthorChange}/></p>
-        <p>url: <input value={newBlogUrl} onChange={handleUrlChange}/></p>
+        <p>Title: <input value={newBlog} onChange={handleBlogChange} placeholder='give a title'/></p>
+        <p>Author: <input value={newBlogAuthor} onChange={handleAuthorChange} placeholder='give a author'/></p>
+        <p>url: <input value={newBlogUrl} onChange={handleUrlChange} placeholder='give a url'/></p>
         <button type="submit">create</button>
       </form>
       <br/>
@@ -62,9 +58,3 @@ const BlogForm = (props) => {
   )
 }
 export default BlogForm
-/*
-jos props.addBlog, refreshaa sivun
-          <form onSubmit={props.addBlog}>
- ReFreshaa kun täällä
-          <button type="submit" onClick={() => setNewBlogVisible(false)}>create</button>
- */

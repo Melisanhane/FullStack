@@ -7,7 +7,7 @@ const Notification = ({ notification }) => {
   else if (notification === 'add') {
     return (
       <div className="add">
-        {'a new blog has been added'}
+        {'a new blog added'}
       </div>
     )
   }
@@ -17,6 +17,20 @@ const Notification = ({ notification }) => {
         {'wrong username or password'}
       </div>
     )
+  else if (notification === 'remove') {
+    return (
+      <div className="add">
+        {'blog removed'}
+      </div>
+    )
+  }
+  else if (notification === 'update') {
+    return (
+      <div className="add">
+        {'blog update'}
+      </div>
+    )
+  }
 }
 
 export default Notification

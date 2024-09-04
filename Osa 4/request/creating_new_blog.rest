@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRhaU1pIiwiaWQiOiI2NjdiZjMyMGI3MjhjOWVkNTY0NzY2MzAiLCJpYXQiOjE3MjM3ODgxMjAsImV4cCI6MTcyMzc5MTcyMH0.ngIYzj1vnNc91M6j7DaIq-4SBT621eMJzAv0_JXSX9I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdU51IiwiaWQiOiI2NmQyYzUyMzExMGRlMWYzZGRkOGRmYjAiLCJpYXQiOjE3MjUwODkyMTEsImV4cCI6MTcyNTA5MjgxMX0.wJdC4G6whzseYSdOKpVq7FIHfErA89DrM2Iqkr1pGAI
 
 {
-        "title": "Testinkii",
-        "author": "Taija Mitronen",
-        "url": "www.testets.fi",
-        "likes": 15
+        "title": "VauvaStaffeja",
+        "author": "Pauli Nummela",
+        "url": "www.vauveli.fi",
+        "likes": 2
 }
