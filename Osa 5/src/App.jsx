@@ -38,17 +38,6 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    /*
-    // Tätä ei tarvitse
-    blogService.create(blogObject).then(returnedBlog => {
-      setBlogs(blogs.concat(returnedBlog))
-      setNotification('blog-added')
-    })
-
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-    */
   }
 
   const handleLogin = async (event) => {
@@ -56,7 +45,7 @@ const App = () => {
     console.log('logging in with', username)
     try {
       const user = await loginService.login({ username, password })
-      window.localStorage.setItem( 'loggedBlogappUser', JSON.stringify(user)) // tokenin tallentaminen local storagen avulla
+      window.localStorage.setItem( 'loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
