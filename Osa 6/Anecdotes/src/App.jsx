@@ -17,7 +17,7 @@ const App = () => {
 /*  TÄTÄ TARVITAAN 6.9 MUTTA TARVIIKO TÄÄÄLLÄ??
   const reducer = combineReducers({  
     anecdotes: addAnecdote,  
-    filter: filterAnecdotes
+    filter: filterAnecdotes 
   })
 */
 
