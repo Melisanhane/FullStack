@@ -1,24 +1,27 @@
-import { useSelector, useDispatch } from 'react-redux'
-import  { addAnecdote }  from '../reducers/anecdoteReducer'
+import { useDispatch } from 'react-redux'
+import { createNewAnecdote } from '../reducers/anecdoteReducer'
+import { addNotification } from "../reducers/notificationReducer"
 
-const newAnecdote = () => {
-  const anecdotes = useSelector(state => state) 
+const NewAnecdote = () => {
   const dispatch = useDispatch()
 
-  const createAnecdote = (event) => {
+  const createAnecdote = async (event) => {
     event.preventDefault()
-    const content = event.target.newAnecdote.value
-    event.target.newAnecdote.value = ''
-    dispatch(addAnecdote(content))
+    const content = event.target.NewAnecdote.value
+    console.log(`create anecdote: ${content}`)
+    event.target.NewAnecdote.value = ''
+    dispatch(createNewAnecdote(content))
+    dispatch(addNotification(`You add the anecdote: ${content}`, 5))
   }
+  
   return (
     <div>
     <form onSubmit={createAnecdote}>
-      <input name='newAnecdote'/>
+      <input name='NewAnecdote'/>
       <button type='submit'>create</button>
     </form>
     </div>
   ) 
 }
 
-export default newAnecdote
+export default NewAnecdote

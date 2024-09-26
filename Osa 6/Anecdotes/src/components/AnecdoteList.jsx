@@ -1,24 +1,29 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
-
+import { updateVote } from '../reducers/anecdoteReducer'
+import { addNotification } from "../reducers/notificationReducer"
 
 const AnecdoteList = () => {
-    // Palautetaan ainoastaan storen tilasta anecdotes
     const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state.anecdotes)
-
-    const voteAnecdote = (id) => {
-        console.log('vote', id)
-        dispatch(vote(id))
+    const orderByvotes = (a, b) => b.votes - a.votes
+    const anecdotes = useSelector(({filter, anecdotes}) => {
+        if(filter === '') {
+          return anecdotes
+        }
+        return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+      })
+    const voteAnecdote = (anecdote) => {
+        console.log('vote', anecdote.id)
+        dispatch(updateVote(anecdote))
+        dispatch(addNotification(`You voted for ${anecdote.id}`, 5))
     }
-
+    
     return (
         <div>
-        {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        {[...anecdotes].sort(orderByvotes).map(anecdote =>
             <div key={anecdote.id}>
                 <div>{anecdote.content}</div>
                 <div>has {anecdote.votes}
-                    <button onClick={() => voteAnecdote(anecdote.id)}>vote</button>
+                    <button onClick={() => voteAnecdote(anecdote)}>vote</button>
                 </div>
             </div>
         )}
