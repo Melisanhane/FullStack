@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const ShowCountry = (country) => {
   console.log(country)
+  debugger
   const apiKey = import.meta.env.VITE_OPEN_WEATHER_API
   const [capitalWeather, setCapitalWeather] = useState(null)  // Show napista tekee errorin koska invalid Hook call
   useEffect(() => {
@@ -48,7 +49,6 @@ const ShowCountry = (country) => {
 };
 
 const CountriesToShow = (filtered) => { 
-  console.log(filtered.countries.length)
   const countries = filtered.countries
   if (countries.length === 250) {
   return

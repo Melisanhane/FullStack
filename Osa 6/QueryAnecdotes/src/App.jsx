@@ -19,7 +19,7 @@ const App = () => {
     updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1 })
     await dispatch({
       type: 'SHOW',
-      payload: `You have voted for the following anecdote: ${anecdote.content}`
+      payload: `You have voted anecdote: ${anecdote.content}`
     });
     setTimeout(()=>{
       dispatch({type: 'HIDE'})

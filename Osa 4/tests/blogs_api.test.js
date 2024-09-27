@@ -1,12 +1,11 @@
-// SUPERTEST
 const { test, describe,  after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')  // importtaa express sovelluksen
-const helper = require('./test_helper')  // importataan apuri
-const api = supertest(app)  // Kääritään sovellus ns. superagent-olioksi (pieni progressiivinen asiakaspuolen HTTP-pyyntökirjasto)
-const bcrypt = require('bcrypt')        // algoritmin tuonti salasanojen määrittämiseen/käsittelyyn tietokantaan
+const app = require('../app')  
+const helper = require('./test_helper')
+const api = supertest(app)
+const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const Blog = require('../models/blog')
 
@@ -47,9 +46,9 @@ describe('Blogs test', () => {
     test('blogs are returned as json', async () => {
         console.log('entered test')
         await api
-            .get('/api/blogs')  // tehdään pyyntö osoitteeseen
-            .expect(200)        // varmistetaan toivottu vastaus
-            .expect('Content-Type', /application\/json/)    // varmistetaan toivottu palautusmuoto 
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
     })
 
     test('blogs have ID', async () => {
@@ -59,7 +58,6 @@ describe('Blogs test', () => {
 
 //      Error: expected 201 "Created", got 500 "Internal Server Error"
     test('new blog can be added and saved in MongoDB ', async () => {
-        // Luodaan testi blogi
         const newBlog = {
             title: "TestiTesti BlogiBlogi",
             url: "www.BlogTest.fi",
@@ -73,16 +71,14 @@ describe('Blogs test', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/)
   
-        const blogAfterPost = await helper.blogsInDb()    // Tarkistetaan mihin tilaan tietokanta on päätynyt
+        const blogAfterPost = await helper.blogsInDb()
         assert.strictEqual(blogAfterPost.length, helper.initialBlogs.length + 1)
-        // Tarkistetaan tuliko testiBlogi
         const title = blogAfterPost.map(data => data.title)
         assert(title.includes("TestiTesti BlogiBlogi"));
     })
 
   //     Error: expected 201 "Created", got 500 "Internal Server Error"
     test('blog no likes', async () => {
-        // Luodaan testi blogi
         const newBlog = {
             title: "No Likes :(",
             url: "www.niiskista.fi",
@@ -94,7 +90,7 @@ describe('Blogs test', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/)
     
-        const blogAfterPost = await helper.blogsInDb()    // Tarkistetaan mihin tilaan tietokanta on päätynyt
+        const blogAfterPost = await helper.blogsInDb()
         assert("likes" in blogAfterPost[1]);
     })
 
@@ -120,18 +116,16 @@ describe('Blogs test', () => {
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
       .set("Authorization", `Bearer ${res._body.token}`)
-      .expect(204)    // No content
+      .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
   })
 
-// Arvo ei muutu
   test('Blogs can be update', async () => {
     const blogsInDB = await helper.blogsInDb()
     const id = blogsInDB[0].id
     
-    // Muokataan likejen määrää 1 -> 11
     const update = {
       title: "Testi Blogi",
       url: "www.testinkiosoite.com",
@@ -148,7 +142,6 @@ describe('Blogs test', () => {
   })
 })
 
-// Testien päätteeksi katkaistaan Mongoosen tietokantayhteys 
 after(async () => {
   await mongoose.connection.close()
 })

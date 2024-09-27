@@ -12,7 +12,6 @@ const App = () => {
       dispatch(initializeAnecdotes())
   })
   
-  // TÄLLE TYYLITTELY
   return (
     <div>
       <h2>Anecdotes</h2>

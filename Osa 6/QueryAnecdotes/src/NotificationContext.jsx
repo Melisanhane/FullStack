@@ -13,9 +13,9 @@ const NotificationReducer = (state, action) =>{
 
 const NotificationContext = createContext()
 export const NotificationContextProvider = (props) =>{
-  const [notifications, setNotificationsDispatch] = useReducer(NotificationReducer, '')
+  const [notifications, setNotifications] = useReducer(NotificationReducer, '')
   return(
-    <NotificationContext.Provider value={[notifications, setNotificationsDispatch]}>
+    <NotificationContext.Provider value={[notifications, setNotifications]}>
       {props.children}
     </NotificationContext.Provider>
   )
@@ -26,7 +26,6 @@ export const useNotificationValue = ()=> {
   return notificationAndDispatch[0]
 }
 
-// TÄSSÄ KUSEE KOSKA EI OLE NULL VAAN LISTA
 export const useNotificationDispatch = () => {
   const notificationAndDispatch = useContext(NotificationContext)
   return notificationAndDispatch[1]

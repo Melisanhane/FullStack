@@ -2,10 +2,10 @@ const { test, describe,  after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')  // importtaa express sovelluksen
-const helper = require('./test_helper')  // importataan apuri
-const api = supertest(app)  // Kääritään sovellus ns. superagent-olioksi (pieni progressiivinen asiakaspuolen HTTP-pyyntökirjasto)
-const bcrypt = require('bcrypt')        // algoritmin tuonti salasanojen määrittämiseen/käsittelyyn tietokantaan
+const app = require('../app')
+const helper = require('./test_helper')
+const api = supertest(app)
+const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 
@@ -19,9 +19,8 @@ beforeEach(async () => {
 
 describe('User test', () => {
     beforeEach(async () => {
-       // Tyhjennetään taulukko
     await User.deleteMany({})
-    await User.insertMany(helper.initialUsers)  // Mongoosen oma syntaksi joka korvaa promiseilla leikkimisen
+    await User.insertMany(helper.initialUsers) 
       /*
       await User.deleteMany({})
   
@@ -56,7 +55,7 @@ describe('User test', () => {
     })
   })
   
-  // EI TOIMI   || ERROR expected 400 "Bad Request", got 201 "Created"
+  // ERROR expected 400 "Bad Request", got 201 "Created"
   test('creation fails with proper statuscode and message if username already taken', async () => {
       const usersAtStart = await helper.usersInDb()
   
@@ -82,7 +81,7 @@ describe('User test', () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'Wo', // Tämä ei toimi
+      username: 'Wo',
       name: 'Fail Name',
       password: '1232',
     }
@@ -98,8 +97,6 @@ describe('User test', () => {
 
   })
 
-
-// Testien päätteeksi katkaistaan Mongoosen tietokantayhteys 
 after(async () => {
   await mongoose.connection.close()
 })

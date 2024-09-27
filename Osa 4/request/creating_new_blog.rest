@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdU51IiwiaWQiOiI2NmQyYzUyMzExMGRlMWYzZGRkOGRmYjAiLCJpYXQiOjE3MjUwODkyMTEsImV4cCI6MTcyNTA5MjgxMX0.wJdC4G6whzseYSdOKpVq7FIHfErA89DrM2Iqkr1pGAI
+Authorization: Bearer <PUT HERE TOKEN>
 
 {
         "title": "VauvaStaffeja",
-        "author": "Pauli Nummela",
+        "author": "Testi Uuseri",
         "url": "www.vauveli.fi",
         "likes": 2
 }

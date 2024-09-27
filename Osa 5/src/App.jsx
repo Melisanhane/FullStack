@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
-// import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -19,7 +18,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  // kirjautuneen käyttäjän ekan sivun lataus ja käyttäjän tallennus localstorageen
+  // Logged user first page and save user to localstore
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -29,7 +28,7 @@ const App = () => {
     }
   }, [])
 
-  // Tämä suoritetaan kun käyttäjä löytyy eli on kirjautunut sisään || kerää blogit talteen
+  // then get blogs
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -50,8 +49,6 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      // Tällä saadaan tokenin experies
-      //   const token = jwt.sign(userForToken, process.env.SECRET,{ expiresIn: 60*60 })
     }
 
     catch (exception) {
@@ -68,7 +65,7 @@ const App = () => {
     setNotification(null)
   }
 
-  // LOG SITE || Tämän voi halutessaan siirtää omaan komponenttiin ja tehdä ProTypet
+  // LOG SITE
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
@@ -108,5 +105,4 @@ const App = () => {
     </div>
   )
 }
-// {!user && loginForm()} <-- jos user on Falsy, eli ei ole, ei suoriteta {user && blogForm()}
 export default App
