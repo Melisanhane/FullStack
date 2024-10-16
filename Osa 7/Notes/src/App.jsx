@@ -25,10 +25,10 @@ const useResource = (baseUrl) => {
         setResources(result.data)
       })
       .catch((error) => {
-        console.log('error message')
+        console.log(error, 'error message')
       })
     }
-  }, [])
+  }, [baseUrl])
 
   const create = async resource => {
     try {
