@@ -1,31 +1,42 @@
-import { useState } from 'react'
+import { useState, useReducer } from 'react'
+import {  useMutation, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
-import Notification from '../components/Notification'
+import { useNotificationDispatch } from '../NotificationContext'
+import { Button } from 'react-bootstrap'
 
 const BlogForm = (props) => {
-
-  const [notification, setNotification] = useState(null)
-
+  const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
   const [newBlog, setNewBlog] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
 
-  const addBlog = (event) => {
+  const newBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+    }
+  })
+ 
+  const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
       title: newBlog,
       author: newBlogAuthor,
       url: newBlogUrl,
       date: new Date().toISOString(),
+      id: (100000 * Math.random()).toFixed(0),
+      likes: 0
     }
-    blogService.create(blogObject).then(
-      setNotification('add')
-    )
-
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-
+    newBlogMutation.mutate( blogObject )   
+    await dispatch({
+        type: 'SHOW',
+        payload: `new blog created`
+      }),
+      setTimeout(()=>{
+        dispatch({type: 'HIDE'})
+      },5000)
+  
     console.log(blogObject)
     setNewBlog('')
     setNewBlogAuthor('')
@@ -45,13 +56,12 @@ const BlogForm = (props) => {
 
   return (
     <div>
-    <Notification notification={notification}/>
       <h2>create new</h2>
       <form onSubmit={addBlog}>
-        <p>Title: <input value={newBlog} onChange={handleBlogChange} placeholder='give a title'/></p>
-        <p>Author: <input value={newBlogAuthor} onChange={handleAuthorChange} placeholder='give a author'/></p>
-        <p>url: <input value={newBlogUrl} onChange={handleUrlChange} placeholder='give a url'/></p>
-        <button type="submit">create</button>
+        <p>Title: <input value={newBlog} name='title' onChange={handleBlogChange} placeholder='give a title'/></p>
+        <p>Author: <input value={newBlogAuthor} name='author' onChange={handleAuthorChange} placeholder='give a author'/></p>
+        <p>url: <input value={newBlogUrl} name='url' onChange={handleUrlChange} placeholder='give a url'/></p>
+        <Button type="submit" className="Btn">create</Button>
       </form>
       <br/>
     </div>

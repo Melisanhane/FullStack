@@ -17,17 +17,21 @@ const create = async (newObject) => {
   return response.data
 }
 
-const update = (id, newObject) => {
-  console.log(newObject)
-  const response = axios.put(`${baseUrl}/${id}`, newObject)
+const update = (newObject) => {
+  const response = axios.put(`${baseUrl}/${newObject.id}`, newObject)
   return response.data
 }
 
-const remove = async (id, user) => {  
-  const response = await axios.delete(`${baseUrl}/${id}`, {headers: { Authorization: `Bearer ${user.token}`, }})
+const remove = async (object) => {  
+  const response = await axios.delete(`${baseUrl}/${object.blog.id}`, {headers: { Authorization: `Bearer ${object.user.token}`, }})
   return response.data
   }
-  
+
+const comment = async (newObject) => {
+  const response = axios.post(`${baseUrl}/${newObject.id}/comments`, newObject)
+  return response.data
+}
+
 export default { 
-  getAll, create, update, setToken, remove 
+  getAll, create, update, setToken, remove, comment 
 }

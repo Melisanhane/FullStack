@@ -1,29 +1,52 @@
-/* NOTIFICATIONS */
-.add {
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: auto;
+    
+}
+p {
+    padding-left: 20px;
+    margin: 10px;
+}
+
+.nav {
+    text-decoration: none;
+    color: inherit;
+    padding-right: 5;
+    display: inline-block;
+    margin-right: 40px;
+    font-size: 20px;
+}
+.notification {
     font-size: 20px;
     padding: 5px;
     text-align: center;
     width: 60%;
     margin-bottom: 10px;
-    color: green;
-    background-color: rgba(128, 128, 128, 0.5);
-    border: 3px solid green;
+    background-color: whitesmoke;
+    border: 3px solid rgb(70, 175, 240);
 }
-.error {
-    font-size: 20px;
-    padding: 5px;
-    text-align: center;
-    width: 60%;
-    margin-bottom: 10px;
-    color: red;
-    background-color: rgba(128, 128, 128, 0.5);
-    border: 3px solid red;
+.Btn {
+    border-radius: 20%;
+    border: 1px;
+    margin-left: 10px;
+    font-size: 15px;
+    background-color: inherit;
+    color:black;
+    border: 1px solid black;
+    padding: 4px
 }
-/* BLOG VIEW STYLES */
+.Btn:hover{
+    background-color: rgb(68, 202, 255);
+}
+
 .blogBox {
     padding: 5px;
     font-size: auto;
-    border: solid grey 0.5px; 
+    color: inherit;
+    text-decoration: none;
+}
+.blogBox:hover, .nav:hover {
+    color:pink;
 }
 
 .visibility {
@@ -39,12 +62,11 @@
     margin-left: 10px;
     border-radius: 20%;
     border: 1px;
-    background-color: lightblue;
+    background-color: lightgreen;
     cursor: pointer;
 }
 .like:hover {
-    background-color: lightpink;
-    cursor: pointer;
+    background-color: lightblue;
 }
 .remove {
     border-radius: 10%;
@@ -54,5 +76,13 @@
     border: solid black 0.2px;
     color: red;
     font-weight: 700;
-    cursor: pointer;
+    background-color: inherit;
+}
+.remove:hover {
+    background-color: red;
+}
+
+.usersView {
+    margin-left: 30px;
+    font-weight: 700;
 }
