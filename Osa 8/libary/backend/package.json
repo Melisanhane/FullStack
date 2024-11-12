@@ -1,0 +1,25 @@
+{
+  "name": "libary-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Taija Mitronen",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "@types/mongoose-unique-validator": "^1.0.9",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "graphql": "^16.9.0",
+    "mongoose": "^7.8.2",
+    "mongoose-unique-validator": "^4.0.1",
+    "uuid": "^11.0.2"
+  }
+}
