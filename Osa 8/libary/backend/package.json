@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "@apollo/server": "^4.11.2",
-    "@types/mongoose-unique-validator": "^1.0.9",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1",
     "graphql": "^16.9.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.8.2",
     "mongoose-unique-validator": "^4.0.1",
-    "uuid": "^11.0.2"
+    "uuid": "^11.0.2",
+    "v8": "^0.1.0"
   }
 }

@@ -6,7 +6,6 @@ const uniqueValidator = require('mongoose-unique-validator')
 const schema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
     unique: true,
     minlength: 5
   },
@@ -23,7 +22,7 @@ const schema = new mongoose.Schema({
 })
 
 schema.plugin(uniqueValidator)
-
+/*
 schema.set('toJSON', {
     transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
@@ -31,6 +30,7 @@ schema.set('toJSON', {
       delete returnedObject.__v
     }
 })
+*/
 
 
 module.exports = mongoose.model('Book', schema)

@@ -1,18 +1,31 @@
 import { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
+import '../style.css'
 
 // props = show: true/false
 const Authors = (props) => {
-  if (!props.show) {
-    return null
-  }
   const result = useQuery(ALL_AUTHORS)
   const [author, setAuthor] = useState('')
-  const [bornTo, setBornTo] = useState('')
+  const [born, setBorn] = useState('')
+
 
   const [ editAuthor ] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [ { query: ALL_AUTHORS }]
+    refetchQueries: [  {query: ALL_AUTHORS} ],    
+      onError: (error) => {
+        const messages = error.graphQLErrors.map(e => e.message).join('\n')
+        setError(messages)
+      }
+    /*
+  // TÄMÄ EI TOIMI ?????
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_AUTHORS }, ({ allAuthors }) => {
+        return {
+          allAuthors: allAuthors.concat(response.data.addAuthor)
+        }
+      })    
+    }
+      */
   })
 
   if (result.loading)  {
@@ -20,19 +33,17 @@ const Authors = (props) => {
   }
 
   const submit = async (event) => {
-    console.log('click')
     event.preventDefault()
     console.log(author)
-
-    editAuthor({ variables: { author, bornTo:parseInt(bornTo) } })
-
-    setBornTo('')
+    editAuthor({ variables: { author, born:parseInt(born) } })
+    setBorn('')
   }
 
+  console.log(result.data.allAuthors)
 // const authors = []
 
   return (
-    <div>
+    <div className="content">
       <div>
         <h2>Authors</h2>
         <table>
@@ -55,13 +66,17 @@ const Authors = (props) => {
       <div>
         <h2>Set birthyear</h2>
         <form onSubmit={submit}>
-          <select value={author} onChange={({ target }) => setAuthor(target.value)}>
+          author:
+          <br />
+          <select className="inputField" value={author} onChange={({ target }) => setAuthor(target.value)}>
             {result.data.allAuthors.map((a) =>
               <option value={a.name}>{a.name}</option>
             )}
           </select>
-          <br/>
-          born:<input value={bornTo} onChange={({ target }) => setBornTo(target.value)}/>
+          <br />
+          born:
+          <br />
+          <input className="inputField" value={born} onChange={({ target }) => setBorn(target.value)}/>
           <br />
           <button type="submit">update author</button>
         </form>
