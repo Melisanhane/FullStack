@@ -18,14 +18,3 @@ const schema = new mongoose.Schema({
 schema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('User', schema)
-/*
-      name: {
-        type: String,
-        required: [true, "Name required."]
-      },
-      passwordHash: String,
-      blogs: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Blog'
-      }],
-*/

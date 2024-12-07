@@ -6,14 +6,34 @@ h2 {
     border-bottom: 2px solid pink;
     width: 360px;
 }
+.content {
+    margin: 30px 50px 0 10px;
+}
+th, td {
+    padding-right: 30px;
+    padding-bottom: 5px;
+    text-align: left;
+}
 
-.notify {
+.inputField {
+    margin-bottom: 10px;
+}
+/* NOTIFICATIONS */
+.error {
     font-weight: 700;
     font-size: 25px;
     width: 360px;
     text-align: center;
     margin-top: 10px;
     color: red;
+}
+.message {
+    font-weight: 700;
+    font-size: 25px;
+    width: 360px;
+    text-align: center;
+    margin-top: 10px;
+    color: green;  
 }
 /* MENU STYLES */
 .menu {
@@ -33,22 +53,6 @@ h2 {
 .menu:active {
     background-color: red;
 }
-/* MENU STYLES END */
-
-.content {
-    margin: 30px 50px 0 10px;
-}
-
-th, td {
-    padding-right: 30px;
-    padding-bottom: 5px;
-    text-align: left;
-}
-
-.inputField {
-    margin-bottom: 10px;
-}
-
 /* BUTTON STYLES */
 button {
     background-color: pink;
@@ -63,4 +67,3 @@ button:hover {
 button:active {
     background-color: red;
 }
-/* BUTTON STYLES END */

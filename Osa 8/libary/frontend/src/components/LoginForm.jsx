@@ -31,6 +31,7 @@ const LoginForm = ({ setError, setToken }) => {
     event.preventDefault()
     login({ variables: { username, password } })
     navigate('/authors')
+    console.log("log in", username)
   }
 
   return (

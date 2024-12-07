@@ -1,35 +1,74 @@
-import { useQuery } from '@apollo/client'
+import { useQuery, useSubscription } from '@apollo/client'
 import { useState } from 'react'
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, BOOK_ADDED } from '../queries'
+import Notification from './Notification'
 import '../style.css'
 
-// props = show: true/false
+// Funktio joka huolehtii välimuistista
+export const updateCache = (cache, query, addedBook) => {
+// Avustaja joka estää saman kirjan lisäyksen kahdesti
+  const uniqByName = (a) => {
+    let seen = new Set()    
+    return a.filter((item) => {
+      let k = item.name
+      return seen.has(k) 
+      ? false 
+      : seen.add(k)    
+    }) 
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),    
+    } 
+  })
+}
+
 const Books = () => {
   const [selectedGenre, setSelectedGenre] = useState("")
+  const [message, setMessage] = useState(null)
 
-  // Pollataan (päivitetään) palvelin 2 sek välein jotta uudet lisäykset näkyvät
-  /*
-    const result = useQuery(ALL_BOOKS,  {
-    pollInterval: 200
-  })
-    */
-  let result = useQuery(ALL_BOOKS, {
-    variables: {genre: selectedGenre},
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      console.log(data)
+      const addedBook = data.data.bookAdded
+      notify(`Book ${addedBook.title} by ${addedBook.author.name} added to the server.`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
   })
 
-  console.log(result.data.allBooks)
-  if (result.loading)  {
+  let genreResult = useQuery(ALL_BOOKS, {
+    variables: {genre: selectedGenre}
+  })
+
+  let allResult = useQuery(ALL_BOOKS, {
+    refetchQueries: [  {query: ALL_BOOKS} ],    
+    onError: (error) => {
+      const messages = error.graphQLErrors.map(e => e.message).join('\n')
+      setError(messages)
+    }
+  })
+
+  if (genreResult.loading || allResult.loading)  {
     return <div>loading...</div>
   }
-  console.log(result.data.allBooks)
 
-  const allGenres = result.data.allBooks.flatMap(book => book.genres);
+  console.log(allResult.data.allBooks)
+
+  const allGenres = allResult.data.allBooks.flatMap(book => book.genres);
   const genres = [ ...new Set(allGenres)];
+
+  const notify = (message) => {
+    console.log(message)
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
   
-  return (
-    <div className="content">
-      <h2>Books</h2>
-        in genre <strong>{selectedGenre || "All"}</strong>
+  const ShowResult = (genre) => {
+    if (!genre.genre) {
+      return (
         <div>
           <table>
             <tbody>
@@ -38,7 +77,7 @@ const Books = () => {
                 <th>author</th>
                 <th>published</th>
               </tr>
-              {result.data.allBooks.map((a) => (
+              {allResult.data.allBooks.map((a) => (
                 <tr key={a.title}>
                   <td>{a.title}</td>
                   <td>{a.author.name}</td>
@@ -48,7 +87,39 @@ const Books = () => {
             </tbody>
           </table>
         </div>
+      )
+    }
+    else {
+      return (
         <div>
+          <table>
+            <tbody>
+              <tr>
+                <th></th>
+                <th>author</th>
+                <th>published</th>
+              </tr>
+              {genreResult.data.allBooks.map((a) => (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author.name}</td>
+                  <td>{a.published}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+  }
+
+  return (
+    <div className="content">
+      <h2>Books</h2>
+      <Notification message={message} />
+      in genre <strong>{selectedGenre || "All"}</strong>
+      <ShowResult genre={selectedGenre} />
+      <div>
         <button onClick={() => setSelectedGenre("")}>All</button>
         {genres.map((genre) => (
           <button key={genre} onClick={() => setSelectedGenre(genre)} >
@@ -59,18 +130,5 @@ const Books = () => {
     </div>
   )
 }
-/*
-<select className="inputField" value={author} onChange={({ target }) => setAuthor(target.value)}>
-            {result.data.allAuthors.map((a) =>
-              <option value={a.name}>{a.name}</option>
-            )}
-          </select>
 
-                  <button onClick={() => setSelectedGenre("")}>All</button>
-        {genres.map((genre) => (
-          <button key={genre} onClick={() => setSelectedGenre(genre)} >
-            {genre}
-          </button>
-        ))}
-*/
 export default Books

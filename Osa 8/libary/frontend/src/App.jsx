@@ -8,6 +8,7 @@ import { BrowserRouter as
 
 import Authors from './components/Authors'
 import Books from './components/Books'
+import Recommendations from './components/Recommendations'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
@@ -40,10 +41,7 @@ const App = () => {
         <LoginForm setToken={setToken} setError={notify}/>
         <Notification errorMessage={errorMessage} />
       </div>
-
     )
-    //                  <Notify errorMessage={notify} />
-    //           setError={notify}
   }
 
   const logout = () => {
@@ -51,11 +49,7 @@ const App = () => {
     localStorage.clear()
     client.resetStore()
     navigate('/')
-    /*
-    return (
-          <LoginForm setToken={setToken} />
-    )
-          */
+    console.log("logout")
   }
 
   return (
@@ -63,6 +57,7 @@ const App = () => {
         <div>
           <Link className="menu" to="/authors">authors</Link>
           <Link className="menu" to="/books">books</Link>
+          <Link className='menu' to="/recommendations">recommend</Link>
           <Link className="menu" to="/addbook">add book</Link>
           {token && (
           <Link className="menu" to="/" onClick={logout}>LOGOUT</Link>
@@ -71,6 +66,7 @@ const App = () => {
         <Routes>
           <Route path="/authors" element={<Authors />} />
           <Route path="/books" element={<Books />} />
+          <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/addbook" element={<NewBook />} />
           <Route path="/" element={<LoginForm setToken={setToken} />} />
         </Routes>

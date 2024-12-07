@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ALL_BOOKS, ALL_AUTHORS, CREATE_BOOK } from '../queries'
+import { BrowserRouter as 
+  Router, Routes, Route, Link,
+  useNavigate,
+} from 'react-router-dom'
+import Notification from './Notification'
 import '../style.css'
 
 const NewBook = () => {
-
+  const [errorMessage, setErrorMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const navigate = useNavigate()
 
 // Palauttaa kyselyfunktion taulukon ensimmäisenä alkiona
 // Päivitetäään välimuisti jotta saadaan lisätyt kirjat heti näkyviin
@@ -19,16 +25,24 @@ const NewBook = () => {
 
   const submit = async (event) => {
     event.preventDefault()
+    if (!title || !author || !published || !genres ) {
+      const message = "fill all fields"
+      setErrorMessage(message)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      debugger
+      return
+    }
   // Määritellään kyselylle muuttujat
     createBook({ variables: { title, author, published:parseInt(published), genres } })
     console.log('add book...')
-
     setTitle('')
     setPublished('')
     setAuthor('')
     setGenres([])
     setGenre('')
-    
+    navigate('/books')
   }
 
   const addGenre = () => {
@@ -38,6 +52,8 @@ const NewBook = () => {
 
   return (
     <div className="content">
+      <h2>Add book</h2>
+      <Notification errorMessage={errorMessage} />
       <form onSubmit={submit}>
         <div className="inputField">
           title:
