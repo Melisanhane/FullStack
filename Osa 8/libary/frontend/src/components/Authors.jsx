@@ -7,6 +7,7 @@ import '../style.css'
 const Authors = () => {
   const result = useQuery(ALL_AUTHORS)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [author, setAuthor] = useState('')
   const [born, setBorn] = useState('')
 
@@ -31,6 +32,15 @@ const Authors = () => {
     console.log(author)
     editAuthor({ variables: { author, born:parseInt(born) } })
     setBorn('')
+    notify("Birthyear added")
+  }
+
+  const notify = (message) => {
+    console.log(message)
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   console.log(result.data.allAuthors)
@@ -58,7 +68,7 @@ const Authors = () => {
       </div>
       <div>
         <h2>Set birthyear</h2>
-        <Notification errorMessage={errorMessage} />
+        <Notification errorMessage={errorMessage} message={message} />
         <form onSubmit={submit}>
           author:
           <br />
