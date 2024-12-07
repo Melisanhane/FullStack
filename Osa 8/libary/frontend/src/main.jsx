@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 
@@ -23,7 +22,6 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
 })
 
-// WebSocket -yhteys GraphQL-palvelimelle
 const wsLink = new GraphQLWsLink(createClient({
   url: 'ws://localhost:4000',
 }))
@@ -38,7 +36,6 @@ const client = new ApolloClient({
   link: splitLink
 })
 
-// Tarviiko ReactStrictModea??? 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Router>
     <ApolloProvider client={client}>

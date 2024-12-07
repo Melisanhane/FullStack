@@ -4,7 +4,6 @@ import { LOGIN } from '../queries'
 import { BrowserRouter as 
   Router, Routes, Route, Link,
   useNavigate,
-  useParams
 } from 'react-router-dom'
 import '../style.css'
 

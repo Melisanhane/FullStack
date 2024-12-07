@@ -17,8 +17,6 @@ const NewBook = () => {
   const [genres, setGenres] = useState([])
   const navigate = useNavigate()
 
-// Palauttaa kyselyfunktion taulukon ensimmäisenä alkiona
-// Päivitetäään välimuisti jotta saadaan lisätyt kirjat heti näkyviin
   const [ createBook ] = useMutation(CREATE_BOOK, {
     refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS }]
   })
@@ -31,10 +29,8 @@ const NewBook = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      debugger
       return
     }
-  // Määritellään kyselylle muuttujat
     createBook({ variables: { title, author, published:parseInt(published), genres } })
     console.log('add book...')
     setTitle('')

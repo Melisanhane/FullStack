@@ -3,7 +3,6 @@ import { useApolloClient } from "@apollo/client"
 import { BrowserRouter as 
   Router, Routes, Route, Link,
   useNavigate,
-  useParams
 } from 'react-router-dom'
 
 import Authors from './components/Authors'

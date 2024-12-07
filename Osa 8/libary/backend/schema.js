@@ -1,5 +1,3 @@
-// Skeema = määrittelee minkä muotoista dataa sovelluksessa vaihdetaan clientin ja palvelimen välillä
-// type Query = Määrittelee mitä kyselyitä API:n voidaan tehdä
 const typeDefs = `
   type User {
     username: String!
