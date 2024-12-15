@@ -4,7 +4,9 @@ import { ALL_BOOKS, BOOK_ADDED } from '../queries'
 import Notification from './Notification'
 import '../style.css'
 
+// Funktio joka huolehtii välimuistista
 export const updateCache = (cache, query, addedBook) => {
+// Avustaja joka estää saman kirjan lisäyksen kahdesti
   const uniqByName = (a) => {
     let seen = new Set()    
     return a.filter((item) => {
@@ -14,6 +16,7 @@ export const updateCache = (cache, query, addedBook) => {
       : seen.add(k)    
     }) 
   }
+
   cache.updateQuery(query, ({ allBooks }) => {
     return {
       allBooks: uniqByName(allBooks.concat(addedBook)),    

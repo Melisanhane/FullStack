@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// Tämä vaatii mongoose 7 version, ei uudempaa/vanhempaa
 const uniqueValidator = require('mongoose-unique-validator')
 
 const schema = new mongoose.Schema({

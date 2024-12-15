@@ -6,6 +6,8 @@ const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
 
+// root = Olio, eli mistä etsitään (Books, Authors)
+// args = argumentit, eli kyselyn parametrit
 const resolvers = {
     Query: {
       bookCount: async () => Book.collection.countDocuments(),
@@ -77,6 +79,7 @@ const resolvers = {
         },
   
         addBook: async (root, args, context) => {
+        // TSEKATAAN ONKO KÄYTTÄJÄ KIRJAUTUNUT
           const currentUser = context.currentUser
           if (!currentUser) {      
             throw new GraphQLError('not authenticated', {        
@@ -87,6 +90,7 @@ const resolvers = {
           }
   
           const checkAuthor = await Author.findOne({ name: args.author })
+        // TSEKATAAN ONKO KÄYTTÄJÄ OLEMASSA JA JOS EI NIIN LUODAAN UUSI
           if (!checkAuthor) {
             try {
               const author = new Author({ name: args.author })
@@ -120,6 +124,7 @@ const resolvers = {
           return book
         },
         editAuthor: async (root, args, context) => {
+        // TSEKATAAN ONKO KÄYTTÄJÄ KIRJAUTUNUT
           const currentUser = context.currentUser
           if (!currentUser) {      
             throw new GraphQLError('not authenticated', {        

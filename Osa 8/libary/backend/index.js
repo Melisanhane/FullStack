@@ -4,11 +4,11 @@ const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/dra
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 const { WebSocketServer } = require('ws')
 const { useServer } = require('graphql-ws/lib/use/ws')
-
+// EXPRESS:n kanssa pakolliset
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
-
+// ---------------------------
 const jwt = require('jsonwebtoken')
 
 const typeDefs = require('./schema')
@@ -33,6 +33,7 @@ mongoose.connect(MONGODB_URI)
   })
 // ----- MONGO END -----
 
+// setup is now within a function
 const start = async () => {  
   const app = express()  
   const httpServer = http.createServer(app)
