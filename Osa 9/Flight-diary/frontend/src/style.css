@@ -1,0 +1,30 @@
+body {
+    margin: 20px;
+}
+.error {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+    margin-left: 30px;
+    margin-bottom: 15px;
+    padding: 5px;
+    color:red;
+    border: 2px solid red;
+    width: 10%;
+}
+
+.radioBtns {
+    margin: 5px 0 5px 20px;
+}
+.date {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.comment {
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+.diarys {
+    margin: 10px;
+    color:black;
+}
