@@ -1,12 +1,16 @@
 import express from 'express';
 import { z } from 'zod';
 import patientsService from '../services/patientsService';
-import toNewPatientEntry from '../utils/utils';
+import { toNewPatientEntry, entryTypeguard } from '../utils/utils';
 
 const patientRouter = express.Router();
 
 patientRouter.get('/', (_req, res) => {
   res.send(patientsService.getNonSensitiveEntries());
+});
+
+patientRouter.get('/:id', (req, res) => {
+  res.send(patientsService.findOne(req.params.id));
 });
 
 patientRouter.post('/', (req, res) => {
@@ -16,23 +20,28 @@ patientRouter.post('/', (req, res) => {
     res.json(addedEntry);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
+      console.log('error');
       res.status(400).send({ error: error.issues });
     } else {
       res.status(400).send({ error: 'unknown error' });    
     }
   }
-  /*
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment 
-  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-  const addedEntry = patientsService.addPatient({
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation,
+
+  patientRouter.post('/:id/entries', (req, res) => {
+    try {
+        const id:string = req.params.id;
+        console.log(req.body);
+        const entryInsidePatient = entryTypeguard(req.body);
+        const addEntryInsidePatient = patientsService.addInsidePatientEntry(entryInsidePatient,id);
+        res.json(addEntryInsidePatient);
+    } catch (error) {
+        let errorMessage = 'Something bad happened';
+        if(error instanceof Error){
+            errorMessage += 'Error: ' + error.message;
+        }
+        res.status(404).send(errorMessage);
+    }
   });
-  res.json(addedEntry);
-  */
 });
 
 export default patientRouter;

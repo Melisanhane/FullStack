@@ -67,3 +67,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Other styles */
+.basicInfo {
+  margin-bottom: 25px;
+}
+.patientInfo {
+  border: 2px solid darkgreen;
+  border-radius: 18px;
+  padding: 0 10px 10px 10px;
+  margin-bottom: 5px;
+}
+.patientDescription {
+  font-style: italic;
+  font-size: 0.9em;
+}
+.selectBox {
+  display:flex;
+}

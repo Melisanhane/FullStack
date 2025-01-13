@@ -6,12 +6,12 @@ const diagnoses: DiagnosesEntry[] = diagnosesData as DiagnosesEntry[];
 const getEntries = (): DiagnosesEntry[] => {
   return diagnoses;
 };
-/*
+
 const addDiagnose = () => {
   return null;
 };
-*/
+
 export default {
-  getEntries
-//  addDiagnose,
+  getEntries,
+  addDiagnose
 };
