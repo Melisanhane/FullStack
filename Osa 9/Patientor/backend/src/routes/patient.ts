@@ -15,8 +15,10 @@ patientRouter.get('/:id', (req, res) => {
 
 patientRouter.post('/', (req, res) => {
   try {
+    console.log(req.body);
     const NewPatientEntry = toNewPatientEntry(req.body);
     const addedEntry = patientsService.addPatient(NewPatientEntry);
+
     res.json(addedEntry);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {

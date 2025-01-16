@@ -21,8 +21,8 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [specialist, setSpecialist] = useState('');
-//    const [sickLeave, setSickLeave] = useState('');
-//   const [occupation, setOccupation] = useState('');
+//   const [sickLeave, setSickLeave] = useState(Sickleave.startdate);
+//   const [healtRaiting, setHealtRaiting] = useState(HealthCheckRating.Healty);
 
     const addPatient = (event: SyntheticEvent) => {
         event.preventDefault();
@@ -32,6 +32,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           date,
           specialist,
        //   sickLeave
+       // healtCheckRaiting
         });
       };
 
